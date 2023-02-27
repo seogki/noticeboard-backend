@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("user")
-    public User postUser(String userName, String userEmail, String password) {
+    public User postUser(String userEmail,String userNickname, String password) {
         return userService.postUser();
     }
 }
