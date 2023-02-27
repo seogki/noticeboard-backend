@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://13.124.126.111:3306/noticeboard
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: seogki
+    password: seogki
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        "[format_sql]": true
+        "[show_sql]": true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: trace
+  jwt:
+    secret:
