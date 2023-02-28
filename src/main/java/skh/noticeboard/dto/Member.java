@@ -48,7 +48,7 @@ public class Member implements UserDetails {
     private Date createDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "MEMBER_ROLES_TBL", joinColumns = @JoinColumn(name = "ROLES"))
+    @CollectionTable(name = "MEMBER_ROLES_TBL")
     @Builder.Default
     private List<String> roles = new ArrayList();
 

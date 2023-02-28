@@ -24,6 +24,6 @@ public class MemberRoles {
     @Column(name = "MEMBER_ROLE_ID", nullable = false)
     private String memberRoleId;
 
-    // @Column(name = "ROLES", length = 10, nullable = false)
-    // private String roles;
+    @Column(name = "ROLES", length = 10, nullable = false)
+    private String roles;
 }
