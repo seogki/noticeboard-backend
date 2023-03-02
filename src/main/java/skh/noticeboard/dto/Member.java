@@ -30,17 +30,17 @@ import jakarta.persistence.*;
 public class Member implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column(name = "MEMBER_NAME", length = 50)
     private String memberName;
-    @Column(name = "MEMBER_EMAIL", length = 100, nullable = false, unique = true)
+    @Column(name = "MEMBER_EMAIL", nullable = false, unique = true)
     private String memberEmail;
     @Column(name = "MEMBER_NICKNAME", length = 50, nullable = false, unique = true)
     private String memberNickname;
-    @Column(name = "MEMBER_PASSWORD", length = 100, nullable = false)
+    @Column(name = "MEMBER_PASSWORD", nullable = false)
     private String memberPassword;
     @Column(name = "UPDATE_DATE", length = 10, nullable = true)
     private Date updateDate;
@@ -51,11 +51,11 @@ public class Member implements UserDetails {
     @CollectionTable(name = "MEMBER_ROLES_TBL", joinColumns = @JoinColumn(name = "MEMBER_ID"))
     @Column(name = "MEMBER_ROLE", length = 10, nullable = false)
     @Builder.Default
-    private List<String> roles = new ArrayList();
+    private List<String> memberRole = new ArrayList();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return this.memberRole.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
