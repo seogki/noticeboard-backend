@@ -16,7 +16,7 @@ import skh.noticeboard.dto.Member;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final AuthRepository authRepository;
-    private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {

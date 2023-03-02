@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,10 +44,16 @@ public class Member implements UserDetails {
     private String memberNickname;
     @Column(name = "MEMBER_PASSWORD", nullable = false)
     private String memberPassword;
-    @Column(name = "UPDATE_DATE", length = 10, nullable = true)
-    private Date updateDate;
-    @Column(name = "CREATE_DATE", length = 10, nullable = false)
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATE_DATE", length = 10)
     private Date createDate;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATE_DATE", length = 10)
+    private Date updateDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "MEMBER_ROLES_TBL", joinColumns = @JoinColumn(name = "MEMBER_ID"))

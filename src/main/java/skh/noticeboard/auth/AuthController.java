@@ -26,8 +26,8 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<Message> loginSuccess(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
         String memberEmail = memberLoginRequestDto.getMemberEmail();
-        String password = memberLoginRequestDto.getPassword();
-        JwtToken token = authService.login(memberEmail, password);
+        String memberPassword = memberLoginRequestDto.getMemberPassword();
+        JwtToken token = authService.login(memberEmail, memberPassword);
         Message message = null;
         if (token != null) {
             message = Message.builder().status(StatusEnum.OK).message("성공").data(token).build();
@@ -39,12 +39,12 @@ public class AuthController {
 
     @PostMapping("signup")
     public ResponseEntity<Message> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto) {
-        Boolean result = authService.signup(memberSignupRequestDto);
+        String result = authService.signup(memberSignupRequestDto);
         Message message = null;
-        if (result) {
+        if (result == "success") {
             message = Message.builder().status(StatusEnum.OK).message("성공").build();
         } else {
-            message = Message.builder().status(StatusEnum.INTERNAL_SERVER_ERROR).message("에러").build();
+            message = Message.builder().status(StatusEnum.INTERNAL_SERVER_ERROR).message(result).build();
         }
         return ResponseEntity.ok(message);
     }
