@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         "[format_sql]": true
@@ -20,5 +20,8 @@ logging:
         type:
           descriptor:
             sql: trace
-  jwt:
-    secret:
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+server:
+  port: 8082
