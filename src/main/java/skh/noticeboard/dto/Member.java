@@ -30,15 +30,15 @@ import jakarta.persistence.*;
 public class Member implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "MEMBER_ID", nullable = false)
-    private String memberId;
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
 
     @Column(name = "MEMBER_NAME", length = 50)
     private String memberName;
     @Column(name = "MEMBER_EMAIL", length = 100, nullable = false, unique = true)
     private String memberEmail;
-    @Column(name = "MEMBER_NICKNAME", length = 50, nullable = false)
+    @Column(name = "MEMBER_NICKNAME", length = 50, nullable = false, unique = true)
     private String memberNickname;
     @Column(name = "MEMBER_PASSWORD", length = 100, nullable = false)
     private String memberPassword;
@@ -48,7 +48,8 @@ public class Member implements UserDetails {
     private Date createDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "MEMBER_ROLES_TBL")
+    @CollectionTable(name = "MEMBER_ROLES_TBL", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "MEMBER_ROLE", length = 10, nullable = false)
     @Builder.Default
     private List<String> roles = new ArrayList();
 
@@ -64,7 +65,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return memberName;
+        return memberEmail;
     }
 
     @Override

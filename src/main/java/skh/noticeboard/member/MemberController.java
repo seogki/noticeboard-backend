@@ -34,9 +34,9 @@ public class MemberController {
 
     @PostMapping("login")
     public JwtToken loginSuccess(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
-        String memberId = memberLoginRequestDto.getMemberId();
+        String memberEmail = memberLoginRequestDto.getMemberEmail();
         String password = memberLoginRequestDto.getPassword();
-        JwtToken token = memberService.login(memberId, password);
+        JwtToken token = memberService.login(memberEmail, password);
         return token;
     }
 

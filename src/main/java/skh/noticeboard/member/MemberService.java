@@ -20,24 +20,13 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // @Autowired
-    // MemberRepository userRepository;
-
-    // public UserService(BCryptPasswordEncoder encoder,
-    // AuthenticationManagerBuilder authenticationManagerBuilder,
-    // JwtTokenProvider jwtTokenProvider) {
-    // this.encoder = encoder;
-    // this.authenticationManagerBuilder = authenticationManagerBuilder;
-    // this.jwtTokenProvider = jwtTokenProvider;
-    // }
-
     public Member postUser() {
         return new Member();
     }
 
     @Transactional
-    public JwtToken login(String memberId, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId,
+    public JwtToken login(String memberEmail, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail,
                 password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         JwtToken token = jwtTokenProvider.generateToken(authentication);
