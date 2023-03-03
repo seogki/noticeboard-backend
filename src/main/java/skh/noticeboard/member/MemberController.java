@@ -25,7 +25,6 @@ public class MemberController {
 
     @PostMapping("/test")
     public String test(@CurrentSecurityContext(expression = "authentication") Authentication authentication) {
-        Member member = SecurityUtil.getCurrentMemberItem();
         return "success";
     }
 }

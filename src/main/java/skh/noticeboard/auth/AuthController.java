@@ -58,12 +58,10 @@ public class AuthController {
     public ResponseEntity<Message> logout(HttpServletRequest request, HttpServletResponse response) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         Message message = Message.builder().status(StatusEnum.OK).message("성공").build();
-
         return ResponseEntity.ok(message);
     }
 }

@@ -74,7 +74,6 @@ public class JwtTokenProvider {
 
         Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-        // System.out.println(claims.getSubject() + " " + claims.toString());
         Optional<Member> member = authRepository.findByMemberEmail(claims.getSubject());
         UserDetails principal = new UserDto(member.get(), claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
