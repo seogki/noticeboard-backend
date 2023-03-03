@@ -25,6 +25,7 @@ import jakarta.persistence.*;
 
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "MEMBER_TBL")

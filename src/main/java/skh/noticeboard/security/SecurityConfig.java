@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/css/**", "/js/**", "/api/auth/**").permitAll()
-                .requestMatchers("/api/members/test").hasRole("USER")
+                .requestMatchers("/api/members/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
