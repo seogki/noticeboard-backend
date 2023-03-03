@@ -4,8 +4,10 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,13 +26,19 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import skh.noticeboard.auth.AuthRepository;
 import skh.noticeboard.dto.JwtToken;
+import skh.noticeboard.dto.Member;
+import skh.noticeboard.dto.UserDto;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
 
     protected Key key;
+
+    @Autowired
+    AuthRepository authRepository;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         // 시크릿 값을 decode해서 키 변수에 할당
@@ -42,7 +50,6 @@ public class JwtTokenProvider {
     public JwtToken generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map((GrantedAuthority::getAuthority)).collect(Collectors.joining(","));
-
         // ACCESS TOKEN 생성
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
@@ -67,8 +74,8 @@ public class JwtTokenProvider {
 
         Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        Optional<Member> member = authRepository.findByMemberEmail(claims.getSubject());
+        UserDetails principal = new UserDto(member.get(), claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
