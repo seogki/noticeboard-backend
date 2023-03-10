@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.*;
 
 @Getter
+@Setter
 @Builder
 @ToString
 @AllArgsConstructor

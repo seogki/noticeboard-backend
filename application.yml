@@ -14,6 +14,17 @@ spring:
       hibernate:
         "[format_sql]": true
         "[show_sql]": true
+  mail:
+    host: smtp.gmail.com
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 logging:
   level:
     org:
@@ -23,11 +34,6 @@ logging:
           descriptor:
             sql: trace
 
-  mail:
-    host: smtp.gmail.com
-    port: ${SMTP_PORT}
-    usename: ${SMTP_USERNAME}
-    password: ${SMTP_PASSWORD}
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
