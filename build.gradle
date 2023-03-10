@@ -18,6 +18,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+ 
+	//MAIL
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	//MARIADB 
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 	// JPA

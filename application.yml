@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mariadb://13.124.126.111:3306/noticeboard
+    url: ${MY_DB}
     driver-class-name: org.mariadb.jdbc.Driver
-    username: seogki
-    password: seogki
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
   # sql:
   #   init:
   #     mode: always
@@ -14,6 +14,17 @@ spring:
       hibernate:
         "[format_sql]": true
         "[show_sql]": true
+  mail:
+    host: smtp.gmail.com
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 logging:
   level:
     org:
@@ -22,6 +33,7 @@ logging:
         type:
           descriptor:
             sql: trace
+
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 

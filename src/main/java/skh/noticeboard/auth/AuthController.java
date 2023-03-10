@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import skh.noticeboard.dto.JwtToken;
 import skh.noticeboard.dto.MemberLoginRequestDto;
 import skh.noticeboard.dto.MemberSignupRequestDto;
+import skh.noticeboard.dto.MemberResetPasswordRequestDto;
 import skh.noticeboard.dto.Message;
 import skh.noticeboard.enums.StatusEnum;
 import skh.noticeboard.member.MemberService;
@@ -64,4 +65,16 @@ public class AuthController {
         Message message = Message.builder().status(StatusEnum.OK).message("성공").build();
         return ResponseEntity.ok(message);
     }
+
+    @PostMapping("reset")
+    public ResponseEntity<Message> resetPassword(@RequestBody MemberResetPasswordRequestDto memberResetPasswordRequestDto) {
+        String result =  authService.resetPassword(memberResetPasswordRequestDto);
+        Message message;
+        if (result == "success") {
+            message = Message.builder().status(StatusEnum.OK).message("성공").build();
+        } else {
+            message = Message.builder().status(StatusEnum.INTERNAL_SERVER_ERROR).message(result).build();
+        }
+        return ResponseEntity.ok(message);
+    } 
 }
