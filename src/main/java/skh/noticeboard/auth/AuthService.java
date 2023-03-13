@@ -2,6 +2,7 @@ package skh.noticeboard.auth;
 
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.mail.SimpleMailMessage;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import skh.noticeboard.dto.JwtToken;
 import skh.noticeboard.dto.Member;
+import skh.noticeboard.dto.MemberChangePasswordRequestDto;
 import skh.noticeboard.dto.MemberMailDto;
 import skh.noticeboard.dto.MemberResetPasswordRequestDto;
 import skh.noticeboard.dto.MemberSignupRequestDto;
@@ -71,7 +73,7 @@ public class AuthService {
     public String resetPassword(MemberResetPasswordRequestDto memberResetPasswordRequestDto) {
 
         if(!authRepository.existsByMemberEmail(memberResetPasswordRequestDto.getMemberEmail())) {
-            return "존재하지않은 계정입니다.";
+            return "해당하는 유저를 찾을 수 없습니다.";
         }
 
         return authRepository.findByMemberEmail(memberResetPasswordRequestDto.getMemberEmail())
@@ -79,7 +81,29 @@ public class AuthService {
                 .map(this::sendMail)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
-    } 
+    }
+    
+    @Transactional
+    public String changePassword(MemberChangePasswordRequestDto memberChangePasswordRequestDto) {
+
+        if(!memberChangePasswordRequestDto.getMemberNewPassword().equals(memberChangePasswordRequestDto.getMemberCheckPassword())) {
+            return "일치하지 않은 비밀번호입니다.";
+        }
+        Member member = authRepository.findByMemberEmail(memberChangePasswordRequestDto.getMemberEmail()).get();
+  
+        if(member == null) {
+            return "해당하는 유저를 찾을 수 없습니다.";
+        }
+        String encodedNewPwd = passwordEncoder.encode(memberChangePasswordRequestDto.getMemberNewPassword());
+        member.setMemberPassword(encodedNewPwd);
+        Member result = authRepository.save(member); 
+
+        if(result == null) {
+            return "패스워드 변경 도중 오류 발생";
+        }    
+        return "success";
+    }
+
 
     private MemberMailDto changePassword(Member member) {
         String generatedString = StringUtil.generateRandomString(7);

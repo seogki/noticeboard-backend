@@ -48,21 +48,24 @@ public class JwtTokenProvider {
 
     // 토큰 생성
     public JwtToken generateToken(Authentication authentication) {
+        
+        //* 한달 expiration Date*/
+   
         String authorities = authentication.getAuthorities().stream()
                 .map((GrantedAuthority::getAuthority)).collect(Collectors.joining(","));
         // ACCESS TOKEN 생성
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)) )
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // REFRESH TOKEN 생성
-        String refreshToken = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+        String refreshToken = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .signWith(key, SignatureAlgorithm.HS256).compact();
-
-        return JwtToken.builder().grantType("Bearer").accessToken(accessToken).refreshToken(refreshToken).build();
+ 
+        return JwtToken.builder().grantType("Bearer").accessToken(accessToken).refreshToken(refreshToken).expirationDate(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))).build();
     }
 
     public Authentication getAuthentication(String accessToken) {
@@ -77,7 +80,7 @@ public class JwtTokenProvider {
         Optional<Member> member = authRepository.findByMemberEmail(claims.getSubject());
         UserDetails principal = new UserDto(member.get(), claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-    }
+    } 
 
     public boolean validateToken(String token) {
         try {

@@ -13,6 +13,6 @@ public class StringUtil {
             s.append(AlphaNumericStr.charAt(ch));
         }
  
-        return "";
+        return s.toString();
     } 
 }
