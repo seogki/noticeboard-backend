@@ -21,6 +21,7 @@ import skh.noticeboard.dto.Message;
 import skh.noticeboard.enums.StatusEnum;
 import skh.noticeboard.member.MemberService;
 import skh.noticeboard.dto.Member;
+import skh.noticeboard.dto.MemberChangePasswordRequestDto;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -77,4 +78,16 @@ public class AuthController {
         }
         return ResponseEntity.ok(message);
     } 
-}
+
+    @PostMapping("change")
+    public ResponseEntity<Message>changePassword(@RequestBody MemberChangePasswordRequestDto memberChangePasswordRequestDto) {
+        String result =  authService.changePassword(memberChangePasswordRequestDto);
+        Message message;
+        if (result == "success") {
+            message = Message.builder().status(StatusEnum.OK).message("성공").build();
+        } else {
+            message = Message.builder().status(StatusEnum.INTERNAL_SERVER_ERROR).message(result).build();
+        }
+        return ResponseEntity.ok(message);
+    } 
+}   
