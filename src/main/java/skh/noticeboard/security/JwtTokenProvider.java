@@ -50,23 +50,22 @@ public class JwtTokenProvider {
     public JwtToken generateToken(Authentication authentication) {
         
         //* 한달 expiration Date*/
-        Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30);  
- 
+   
         String authorities = authentication.getAuthorities().stream()
                 .map((GrantedAuthority::getAuthority)).collect(Collectors.joining(","));
         // ACCESS TOKEN 생성
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(expirationDate)
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)) )
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // REFRESH TOKEN 생성
-        String refreshToken = Jwts.builder().setExpiration(expirationDate)
+        String refreshToken = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .signWith(key, SignatureAlgorithm.HS256).compact();
-
-        return JwtToken.builder().grantType("Bearer").accessToken(accessToken).refreshToken(refreshToken).expirationDate(expirationDate).build();
+ 
+        return JwtToken.builder().grantType("Bearer").accessToken(accessToken).refreshToken(refreshToken).expirationDate(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))).build();
     }
 
     public Authentication getAuthentication(String accessToken) {
